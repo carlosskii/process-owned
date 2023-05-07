@@ -27,7 +27,7 @@ use std::{
 /// variable with the `lazy_static` crate, it will never be
 /// dropped. This allows values to easily and clearly share
 /// the scope of the entire process.
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct ProcessOwned<T> {
     value: Rc<T>
 }

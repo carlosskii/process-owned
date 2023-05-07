@@ -2,5 +2,15 @@
 name = "process-owned"
 version = "0.1.0"
 edition = "2021"
+description = "Assign ownership of a value to the process itself"
+homepage = "https://github.com/carlosskii/process-owned"
+repository = "https://github.com/carlosskii/process-owned"
+documentation = "https://docs.rs/process-owned"
+readme = "README.md"
+keywords = [
+  "process",
+  "lifetime",
+  "ownership"
+]
 
 [dependencies]
