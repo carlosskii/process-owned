@@ -1,6 +1,6 @@
 use std::{
     rc::Rc,
-    ops::Deref
+    ops::{Deref, DerefMut}
 };
 
 /// A value that is owned by the process itself.
@@ -53,5 +53,11 @@ impl<T> Deref for ProcessOwned<T> {
 
     fn deref(&self) -> &Self::Target {
         &self.value
+    }
+}
+
+impl<T: Clone> DerefMut for ProcessOwned<T> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        Rc::make_mut(&mut self.value)
     }
 }

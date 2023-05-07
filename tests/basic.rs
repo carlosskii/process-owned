@@ -16,3 +16,12 @@ fn test_clone() {
   assert_eq!(*value, 42);
   assert_eq!(*value2, 42);
 }
+
+#[test]
+fn test_mut() {
+  let mut value = ProcessOwned::new(42);
+
+  *value = 5;
+
+  assert_eq!(*value, 5);
+}
