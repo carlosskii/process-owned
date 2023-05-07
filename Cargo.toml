@@ -12,5 +12,8 @@ keywords = [
   "lifetime",
   "ownership"
 ]
+exclude = [
+  "tests"
+]
 
 [dependencies]
