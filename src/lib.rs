@@ -11,6 +11,7 @@
 
 use std::{
     rc::Rc,
+    cell::RefCell,
     ops::Deref
 };
 
@@ -29,7 +30,7 @@ use std::{
 /// the scope of the entire process.
 #[derive(Clone, Debug)]
 pub struct ProcessOwned<T> {
-    value: Rc<T>
+    value: Rc<RefCell<T>>
 }
 
 impl<T> ProcessOwned<T> {
@@ -45,19 +46,13 @@ impl<T> ProcessOwned<T> {
     /// ```
     pub fn new(value: T) -> Self {
         ProcessOwned {
-            value: Rc::new(value)
+            value: Rc::new(RefCell::new(value))
         }
     }
 }
 
-impl<T> From<ProcessOwned<T>> for Rc<T> {
-    fn from(value: ProcessOwned<T>) -> Self {
-        value.value
-    }
-}
-
 impl<T> Deref for ProcessOwned<T> {
-    type Target = T;
+    type Target = Rc<RefCell<T>>;
 
     fn deref(&self) -> &Self::Target {
         &self.value
