@@ -1,3 +1,14 @@
+#![warn(missing_docs)]
+
+//! This crate provides the `ProcessOwned` type, a value
+//! that shares its lifetime with the process *unless* it
+//! can be optimally freed earlier than that.
+//! 
+//! Internally, `ProcessOwned` uses the `Rc` type to
+//! ensure that the value is only dropped when the last
+//! owner is dropped. The specific implementation is
+//! subject to change for performance reasons.
+
 use std::{
     rc::Rc,
     ops::{Deref, DerefMut}
@@ -16,15 +27,6 @@ use std::{
 /// variable with the `lazy_static` crate, it will never be
 /// dropped. This allows values to easily and clearly share
 /// the scope of the entire process.
-/// 
-/// # Examples
-///
-/// ```
-/// use process_owned::ProcessOwned;
-/// 
-/// let value = ProcessOwned::new(5);
-/// assert_eq!(*value, 5);
-/// ```
 #[derive(Clone)]
 pub struct ProcessOwned<T> {
     value: Rc<T>
