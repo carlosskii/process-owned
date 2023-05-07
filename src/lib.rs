@@ -1,14 +1,22 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+use std::{rc::Rc, ops::Deref};
+
+
+pub struct ProcessOwned<T> {
+    pub value: Rc<T>
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+impl<T> ProcessOwned<T> {
+    pub fn new(value: T) -> Self {
+        ProcessOwned {
+            value: Rc::new(value)
+        }
+    }
+}
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+impl<T> Deref for ProcessOwned<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        &self.value
     }
 }
