@@ -16,5 +16,3 @@ keywords = [
 exclude = [
   "tests"
 ]
-
-[dependencies]

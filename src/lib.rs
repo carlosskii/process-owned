@@ -30,7 +30,7 @@ use std::{
 /// the scope of the entire process.
 #[derive(Clone, Debug)]
 pub struct ProcessOwned<T> {
-    value: Rc<RefCell<T>>
+    value: Rc<T>
 }
 
 impl<T> ProcessOwned<T> {
@@ -46,13 +46,50 @@ impl<T> ProcessOwned<T> {
     /// ```
     pub fn new(value: T) -> Self {
         ProcessOwned {
-            value: Rc::new(RefCell::new(value))
+            value: Rc::new(value)
         }
     }
 }
 
 impl<T> Deref for ProcessOwned<T> {
-    type Target = Rc<RefCell<T>>;
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
+
+/// A mutable version of `ProcessOwned`.
+/// 
+/// This type is identical to `ProcessOwned` except that
+/// it provides mutability. This is done by using a
+/// `RefCell` internally.
+#[derive(Clone, Debug)]
+pub struct ProcessOwnedMut<T> {
+    value: Rc<RefCell<T>>
+}
+
+impl<T> ProcessOwnedMut<T> {
+    /// Create a new `ProcessOwnedMut` value.
+    /// 
+    /// # Examples
+    /// 
+    /// ```
+    /// use process_owned::ProcessOwnedMut;
+    /// 
+    /// let mut value = ProcessOwnedMut::new(5);
+    /// *value.borrow_mut() = 10;
+    /// assert_eq!(*value.borrow(), 10);
+    /// ```
+    pub fn new(value: T) -> Self {
+        ProcessOwnedMut {
+            value: Rc::new(RefCell::new(value))
+        }
+    }
+}
+
+impl<T> Deref for ProcessOwnedMut<T> {
+    type Target = RefCell<T>;
 
     fn deref(&self) -> &Self::Target {
         &self.value
