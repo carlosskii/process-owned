@@ -1,4 +1,7 @@
-use std::{rc::Rc, ops::Deref};
+use std::{
+    rc::Rc,
+    ops::Deref
+};
 
 
 pub struct ProcessOwned<T> {
@@ -9,6 +12,12 @@ impl<T> ProcessOwned<T> {
     pub fn new(value: T) -> Self {
         ProcessOwned {
             value: Rc::new(value)
+        }
+    }
+
+    pub fn clone(&self) -> Self {
+        ProcessOwned {
+            value: Rc::clone(&self.value)
         }
     }
 }

@@ -7,3 +7,12 @@ fn test_basic() {
 
   assert_eq!(*value, 42);
 }
+
+#[test]
+fn test_clone() {
+  let value = ProcessOwned::new(42);
+  let value2 = value.clone();
+
+  assert_eq!(*value, 42);
+  assert_eq!(*value2, 42);
+}
