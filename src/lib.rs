@@ -12,7 +12,8 @@
 use std::{
     rc::Rc,
     cell::RefCell,
-    ops::Deref
+    ops::Deref,
+    alloc::{alloc, Layout}
 };
 
 /// A value that is owned by the process itself.
@@ -93,5 +94,44 @@ impl<T> Deref for ProcessOwnedMut<T> {
 
     fn deref(&self) -> &Self::Target {
         &self.value
+    }
+}
+
+/// A value that is truly owned by the process itself.
+/// 
+/// Using this type is similar to using a `ProcessOwned`
+/// with `lazy_static`, except the value can only be dropped
+/// when the process terminates. This can lead to memory
+/// leaks, but it can also be useful for values that are
+/// used throughout the entire process.
+#[derive(Clone, Debug)]
+pub struct Immortal<T> {
+    value: *const T
+}
+
+impl<T> Immortal<T> {
+    /// Creates a new `Immortal` value.
+    pub unsafe fn new(value: T) -> Self {
+        let layout = Layout::new::<T>();
+        let ptr = alloc(layout) as *mut T;
+        *ptr = value;
+
+        Immortal {
+            value: ptr
+        }
+    }
+}
+
+impl<T> From<Immortal<T>> for *const T {
+    fn from(immortal: Immortal<T>) -> Self {
+        immortal.value
+    }
+}
+
+impl<T> Deref for Immortal<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        unsafe { &*self.value }
     }
 }

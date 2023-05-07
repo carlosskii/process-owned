@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0] - Unreleased
 
+### Added
+
+- `ProcessOwnedMut` struct
+  - `Deref` implementation
+- `Immortal` struct
+  - `Clone` implementation
+  - `Deref` implementation
+
 ### Removed
 
 - `ProcessOwned::DerefMut` implementation
