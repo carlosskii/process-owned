@@ -111,6 +111,24 @@ pub struct Immortal<T> {
 
 impl<T> Immortal<T> {
     /// Creates a new `Immortal` value.
+    /// 
+    /// # Safety
+    /// 
+    /// This function is unsafe because it allocates memory
+    /// and stores a raw pointer to it. The memory is never
+    /// freed, so it is up to the caller to ensure that the
+    /// memory is not leaked.
+    /// 
+    /// # Examples
+    /// 
+    /// ```
+    /// use process_owned::Immortal;
+    /// 
+    /// unsafe {
+    ///     let immortal = Immortal::new(5);
+    ///     assert_eq!(*immortal, 5);
+    /// }
+    /// ```
     pub unsafe fn new(value: T) -> Self {
         let layout = Layout::new::<T>();
         let ptr = alloc(layout) as *mut T;

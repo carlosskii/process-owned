@@ -9,16 +9,8 @@ When paired with the `lazy_static` crate, this can be used to create a global da
 ```rust
 use process_owned::ProcessOwned;
 
-let mut data = ProcessOwned::new(5);
-let mut data2 = data.clone();
-
-assert_eq!(*data, 5);
-assert_eq!(*data2, 5);
-
-*data = 10;
-
-assert_eq!(*data, 10);
-assert_eq!(*data2, 10);
+let mut data = ProcessOwned::new(0);
+assert_eq!(*data, 0);
 ```
 
 ## License
